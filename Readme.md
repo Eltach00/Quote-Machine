@@ -1,0 +1,1 @@
+# Quote Machine by Eltadzh Guliev
