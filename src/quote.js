@@ -20,6 +20,12 @@ export default class Quote {
   constructor() {
     this.render()
     this.eventBtn()
+    const randomColor = this.getRandomInteger(0, colors.length - 1)
+    this.styleText = `background-color: ${colors[randomColor]};
+    transition: background-color 1000ms linear;`
+    this.url = new URL(`https://twitter.com/intent/tweet`)
+    this.url.searchParams.set('hashtags', 'quotes')
+    this.url.searchParams.set('related', 'freecodecamp')
   }
 
   async render() {
@@ -36,6 +42,15 @@ export default class Quote {
       <div id='author' class='author'>-${
         this.data[this.randomQuote].author
       }</div>
+      <a
+      id='twit'
+      type="button"
+      class='twit'
+      href=''
+      title="Tweet this quote!"
+    >
+      Twitter
+    </a>
       <button id="btn" class="btn" data-type="btn">New Quote</button>
       </div>
       `
@@ -47,20 +62,27 @@ export default class Quote {
   }
 
   changeColor() {
-    const randomColor = this.getRandomInteger(0, colors.length - 1)
     const container = document.getElementById('container')
 
-    container.style.cssText = `    background-color: ${colors[randomColor]};
-     transition: background-color 1000ms linear;`
+    container.style.cssText = this.styleText
 
     const text = document.getElementById('text')
     setTimeout(() => {
       text.classList.add('change')
     }, 300)
 
+    const anchor = document.getElementById('twit')
+    this.url.searchParams.set(
+      'text',
+      `'${this.data[this.randomQuote].quote}' ${
+        this.data[this.randomQuote].author
+      }`
+    )
+    anchor.href = this.url
+    anchor.style.cssText = this.styleText
+
     const btn = document.getElementById('btn')
-    btn.style.cssText = `    background-color: ${colors[randomColor]};
-    transition: background-color 1000ms linear;`
+    btn.style.cssText = this.styleText
   }
 
   async getQuotes() {
